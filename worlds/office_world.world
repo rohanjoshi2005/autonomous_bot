@@ -1,0 +1,263 @@
+<?xml version="1.0" ?>
+<sdf version="1.6">
+
+  <world name="office_world">
+
+    <include>
+      <uri>model://ground_plane</uri>
+    </include>
+
+    <include>
+      <uri>model://sun</uri>
+    </include>
+
+    <!-- ================= OUTER WALLS ================= -->
+
+    <model name="wall_north">
+      <static>true</static>
+      <pose>0 5 0.5 0 0 0</pose>
+      <link name="link">
+        <collision name="c">
+          <geometry><box><size>10 0.1 1</size></box></geometry>
+        </collision>
+        <visual name="v">
+          <geometry><box><size>10 0.1 1</size></box></geometry>
+        </visual>
+      </link>
+    </model>
+
+    <model name="wall_south">
+      <static>true</static>
+      <pose>0 -5 0.5 0 0 0</pose>
+      <link name="link">
+        <collision name="c">
+          <geometry><box><size>10 0.1 1</size></box></geometry>
+        </collision>
+        <visual name="v">
+          <geometry><box><size>10 0.1 1</size></box></geometry>
+        </visual>
+      </link>
+    </model>
+
+    <model name="wall_east">
+      <static>true</static>
+      <pose>5 0 0.5 0 0 1.5708</pose>
+      <link name="link">
+        <collision name="c">
+          <geometry><box><size>10 0.1 1</size></box></geometry>
+        </collision>
+        <visual name="v">
+          <geometry><box><size>10 0.1 1</size></box></geometry>
+        </visual>
+      </link>
+    </model>
+
+    <model name="wall_west">
+      <static>true</static>
+      <pose>-5 0 0.5 0 0 1.5708</pose>
+      <link name="link">
+        <collision name="c">
+          <geometry><box><size>10 0.1 1</size></box></geometry>
+        </collision>
+        <visual name="v">
+          <geometry><box><size>10 0.1 1</size></box></geometry>
+        </visual>
+      </link>
+    </model>
+
+    <!-- ================= ROOM DIVIDERS ================= -->
+
+    <!-- Horizontal divider with doorway -->
+    <model name="divider_top_left">
+      <static>true</static>
+      <pose>-2.5 1.5 0.5 0 0 0</pose>
+      <link name="link">
+        <collision name="c">
+          <geometry><box><size>5 0.1 1</size></box></geometry>
+        </collision>
+        <visual name="v">
+          <geometry><box><size>5 0.1 1</size></box></geometry>
+        </visual>
+      </link>
+    </model>
+
+    <model name="divider_top_right">
+      <static>true</static>
+      <pose>3.5 1.5 0.5 0 0 0</pose>
+      <link name="link">
+        <collision name="c">
+          <geometry><box><size>3 0.1 1</size></box></geometry>
+        </collision>
+        <visual name="v">
+          <geometry><box><size>3 0.1 1</size></box></geometry>
+        </visual>
+      </link>
+    </model>
+
+    <!-- Vertical divider -->
+    <model name="divider_vertical">
+      <static>true</static>
+      <pose>0 -1.5 0.5 0 0 1.5708</pose>
+      <link name="link">
+        <collision name="c">
+          <geometry><box><size>6 0.1 1</size></box></geometry>
+        </collision>
+        <visual name="v">
+          <geometry><box><size>6 0.1 1</size></box></geometry>
+        </visual>
+      </link>
+    </model>
+
+    <!-- ================= BOXES ================= -->
+
+    <model name="box1">
+      <static>true</static>
+      <pose>2 3 0.3 0 0 0</pose>
+      <link name="link">
+        <collision name="c">
+          <geometry><box><size>0.8 0.8 0.6</size></box></geometry>
+        </collision>
+        <visual name="v">
+          <geometry><box><size>0.8 0.8 0.6</size></box></geometry>
+        </visual>
+      </link>
+    </model>
+
+    <model name="box2">
+      <static>true</static>
+      <pose>-3 3 0.3 0 0 0</pose>
+      <link name="link">
+        <collision name="c">
+          <geometry><box><size>1.0 0.6 0.6</size></box></geometry>
+        </collision>
+        <visual name="v">
+          <geometry><box><size>1.0 0.6 0.6</size></box></geometry>
+        </visual>
+      </link>
+    </model>
+
+    <model name="box3">
+      <static>true</static>
+      <pose>-3 -3 0.3 0 0 0</pose>
+      <link name="link">
+        <collision name="c">
+          <geometry><box><size>0.7 0.7 0.6</size></box></geometry>
+        </collision>
+        <visual name="v">
+          <geometry><box><size>0.7 0.7 0.6</size></box></geometry>
+        </visual>
+      </link>
+    </model>
+
+    <model name="box4">
+      <static>true</static>
+      <pose>3 -3 0.3 0 0 0</pose>
+      <link name="link">
+        <collision name="c">
+          <geometry><box><size>0.6 1.0 0.6</size></box></geometry>
+        </collision>
+        <visual name="v">
+          <geometry><box><size>0.6 1.0 0.6</size></box></geometry>
+        </visual>
+      </link>
+    </model>
+
+    <!-- ================= CYLINDERS ================= -->
+
+    <model name="cylinder1">
+      <static>true</static>
+      <pose>1 -1 0.4 0 0 0</pose>
+      <link name="link">
+        <collision name="c">
+          <geometry>
+            <cylinder>
+              <radius>0.25</radius>
+              <length>0.8</length>
+            </cylinder>
+          </geometry>
+        </collision>
+        <visual name="v">
+          <geometry>
+            <cylinder>
+              <radius>0.25</radius>
+              <length>0.8</length>
+            </cylinder>
+          </geometry>
+        </visual>
+      </link>
+    </model>
+
+    <model name="cylinder2">
+      <static>true</static>
+      <pose>-1 2.5 0.4 0 0 0</pose>
+      <link name="link">
+        <collision name="c">
+          <geometry>
+            <cylinder>
+              <radius>0.25</radius>
+              <length>0.8</length>
+            </cylinder>
+          </geometry>
+        </collision>
+        <visual name="v">
+          <geometry>
+            <cylinder>
+              <radius>0.25</radius>
+              <length>0.8</length>
+            </cylinder>
+          </geometry>
+        </visual>
+      </link>
+    </model>
+
+    <!-- ================= TRAFFIC CONES ================= -->
+
+    <model name="cone1">
+      <static>true</static>
+      <pose>2 -2 0.2 0 0 0</pose>
+      <link name="link">
+        <collision name="c">
+          <geometry>
+            <cylinder>
+              <radius>0.12</radius>
+              <length>0.4</length>
+            </cylinder>
+          </geometry>
+        </collision>
+        <visual name="v">
+          <geometry>
+            <cylinder>
+              <radius>0.12</radius>
+              <length>0.4</length>
+            </cylinder>
+          </geometry>
+        </visual>
+      </link>
+    </model>
+
+    <model name="cone2">
+      <static>true</static>
+      <pose>-2 0.5 0.2 0 0 0</pose>
+      <link name="link">
+        <collision name="c">
+          <geometry>
+            <cylinder>
+              <radius>0.12</radius>
+              <length>0.4</length>
+            </cylinder>
+          </geometry>
+        </collision>
+        <visual name="v">
+          <geometry>
+            <cylinder>
+              <radius>0.12</radius>
+              <length>0.4</length>
+            </cylinder>
+          </geometry>
+        </visual>
+      </link>
+    </model>
+
+  </world>
+
+</sdf>

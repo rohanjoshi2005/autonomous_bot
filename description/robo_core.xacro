@@ -1,0 +1,208 @@
+<?xml version="1.0"?>
+<!--
+  Robot URDF/XACRO
+  ─────────────────────────────────────────────────
+  Chassis  : 460 mm (L) × 380 mm (W) × 100 mm (H)
+  Drive wheels (×2, rear)
+           : Ø 113 mm (r = 56.5 mm), 40 mm thick
+             – 7 cm from rear edge
+             – 3 cm gap from chassis side
+  Caster wheels (×2, front, ball-type, fixed)
+           : Ø 50 mm sphere, symmetric near front
+  ─────────────────────────────────────────────────
+  COORDINATE CONVENTION
+    base_link : rear-center of chassis, at ground (z = 0)
+    +X        : forward
+    +Y        : left
+    +Z        : up
+-->
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" >
+
+
+  <xacro:include filename="inertial_macros.xacro" />
+
+
+
+  <!-- ═══════════ MATERIALS ═══════════ -->
+  <material name="white">
+    <color rgba="1 1 1 1"/>
+  </material>
+  <material name="orange">
+    <color rgba="1 0.3 0.1 1"/>
+  </material>
+  <material name="blue">
+    <color rgba="0.2 0.2 1 1"/>
+  </material>
+  <material name="black">
+    <color rgba="0 0 0 1"/>
+  </material>
+  <material name="gray">
+    <color rgba="0.5 0.5 0.5 1"/>
+  </material>
+
+  <!-- ═══════════ BASE LINK ═══════════ -->
+  <!--
+    Placed at rear-center of robot, at ground level.
+    All other links are positioned relative to this origin.
+  -->
+  <link name="base_link"/>
+
+  <!-- ═══════════ CHASSIS ═══════════ -->
+  <!--
+    460 mm × 380 mm × 100 mm box.
+    Joint offsets chassis center to (L/2, 0, H/2) = (0.23, 0, 0.05) from base_link.
+  -->
+  <joint name="chassis_joint" type="fixed">
+    <parent link="base_link"/>
+    <child  link="chassis"/>
+    <origin xyz="0.23 0 0.0765"/>
+  </joint>
+
+  <link name="chassis">
+    <visual>
+      <origin xyz="0 0 0"/>
+      <geometry>
+        <!-- 460 mm L × 380 mm W × 100 mm H -->
+        <box size="0.46 0.38 0.10"/>
+      </geometry>
+      <material name="white"/>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0"/>
+      <geometry>
+        <box size="0.46 0.38 0.10"/>
+      </geometry>
+    </collision>
+    <xacro:inertial_box mass="0.9" x="0.46" y="0.38" z="0.10">
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+    </xacro:inertial_box>
+  </link>
+
+  <!-- ═══════════ LEFT DRIVE WHEEL ═══════════ -->
+  <!--
+    Wheel: Ø 113 mm → radius = 0.0565 m | thickness = 40 mm = 0.04 m
+    Position relative to base_link (wheel centre INSIDE chassis):
+      x = 0.07  (7 cm from rear edge)
+      y = +0.14 (chassis half-width 0.19 − 5 cm from side = 0.14 m)
+      z = 0.0565 (wheel centre sits one radius above ground)
+    Wheel outer face at y = 0.14 + 0.02 = 0.16 m < chassis edge 0.19 m ✓
+    Roll −π/2 rotates the cylinder's default Z-axis onto the world Y-axis.
+  -->
+  <joint name="left_wheel_joint" type="continuous">
+    <parent link="base_link"/>
+    <child  link="left_wheel"/>
+    <origin xyz="0.2335 0.14 0.0565" rpy="${-pi/2} 0 0"/>
+    <axis xyz="0 0 1"/>
+  </joint>
+
+  <link name="left_wheel">
+    <visual>
+      <origin xyz="0 0 0"/>
+      <geometry>
+        <!-- radius 56.5 mm, length (thickness) 40 mm -->
+        <cylinder radius="0.0565" length="0.04"/>
+      </geometry>
+      <material name="blue"/>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0"/>
+      <geometry>
+        <cylinder radius="0.0565" length="0.04"/>
+      </geometry>
+    </collision>
+    <xacro:inertial_cylinder mass="0.1" length="0.04" radius="0.0565">
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+    </xacro:inertial_cylinder>
+  </link>
+
+  <!-- ═══════════ RIGHT DRIVE WHEEL ═══════════ -->
+  <!--
+    Mirror of left wheel: y = −0.14
+    Roll +π/2 keeps the spin direction consistent (axis xyz="0 0 1" gives
+    the same forward-driving sense for both wheels).
+  -->
+  <joint name="right_wheel_joint" type="continuous">
+    <parent link="base_link"/>
+    <child  link="right_wheel"/>
+    <origin xyz="0.2335 -0.14 0.0565" rpy="${pi/2} 0 0"/>
+    <axis xyz="0 0 -1"/>
+  </joint>
+
+  <link name="right_wheel">
+    <visual>
+      <origin xyz="0 0 0"/>
+      <geometry>
+        <cylinder radius="0.0565" length="0.04"/>
+      </geometry>
+      <material name="blue"/>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0"/>
+      <geometry>
+        <cylinder radius="0.0565" length="0.04"/>
+      </geometry>
+    </collision>
+    <xacro:inertial_cylinder mass="0.2" length="0.04" radius="0.0565">
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+    </xacro:inertial_cylinder>
+  </link>
+
+  <!-- ═══════════ CASTER WHEELS (4 CORNERS) ═══════════ -->
+  <!-- x = ±0.18 (half-length 0.23 − 5cm inset)
+       y = ±0.14 (half-width 0.19 − 5cm inset)
+       z = -0.075 (chassis bottom -0.05 minus radius 0.025, so caster bottom touches ground) -->
+
+  <joint name="caster_front_left_joint" type="fixed">
+    <parent link="chassis"/>
+    <child  link="caster_front_left"/>
+    <origin xyz="0.18 0.14 -0.0515"/>
+
+  </joint>
+  <link name="caster_front_left">
+    <visual><geometry><sphere radius="0.025"/></geometry><material name="black"/></visual>
+    <collision><geometry><sphere radius="0.025"/></geometry></collision>
+    <xacro:inertial_sphere mass="0.05" radius="0.025">
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+    </xacro:inertial_sphere>
+  </link>
+
+  <joint name="caster_front_right_joint" type="fixed">
+    <parent link="chassis"/>
+    <child  link="caster_front_right"/>
+    <origin xyz="0.18 -0.14 -0.0515"/>
+  </joint>
+  <link name="caster_front_right">
+    <visual><geometry><sphere radius="0.025"/></geometry><material name="black"/></visual>
+    <collision><geometry><sphere radius="0.025"/></geometry></collision>
+    <xacro:inertial_sphere mass="0.05" radius="0.025">
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+    </xacro:inertial_sphere>
+  </link>
+
+  <joint name="caster_rear_left_joint" type="fixed">
+    <parent link="chassis"/>
+    <child  link="caster_rear_left"/>
+    <origin xyz="-0.18 0.14 -0.0515"/>
+  </joint>
+  <link name="caster_rear_left">
+    <visual><geometry><sphere radius="0.025"/></geometry><material name="black"/></visual>
+    <collision><geometry><sphere radius="0.025"/></geometry></collision>
+    <xacro:inertial_sphere mass="0.05" radius="0.025">
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+    </xacro:inertial_sphere>
+  </link>
+
+  <joint name="caster_rear_right_joint" type="fixed">
+    <parent link="chassis"/>
+    <child  link="caster_rear_right"/>
+    <origin xyz="-0.18 -0.14 -0.0515"/>
+  </joint>
+  <link name="caster_rear_right">
+    <visual><geometry><sphere radius="0.025"/></geometry><material name="black"/></visual>
+    <collision><geometry><sphere radius="0.025"/></geometry></collision>
+    <xacro:inertial_sphere mass="0.05" radius="0.025">
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+    </xacro:inertial_sphere>
+  </link>
+
+</robot>
